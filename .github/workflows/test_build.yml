@@ -47,6 +47,11 @@ jobs:
         Expand-Archive -Path "ffmpeg.zip" -DestinationPath "."
         Move-Item -Path "ffmpeg-master-latest-win64-gpl\bin\ffmpeg.exe" -Destination "."
 
+    - name: Create .env file with credentials
+      run: |
+        echo "SPOTIFY_CLIENT_ID=${{ secrets.SPOTIFY_CLIENT_ID }}" > .env
+        echo "SPOTIFY_CLIENT_SECRET=${{ secrets.SPOTIFY_CLIENT_SECRET }}" >> .env
+
     - name: Test Build with PyInstaller
       run: |
         pyinstaller pythonify.spec
