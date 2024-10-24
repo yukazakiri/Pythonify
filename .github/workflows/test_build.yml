@@ -27,7 +27,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        pip install pyinstaller
+        pip install pyinstaller python-dotenv
 
     - name: Install FFmpeg (Ubuntu)
       if: matrix.os == 'ubuntu-latest'
@@ -49,11 +49,11 @@ jobs:
 
     - name: Test Build with PyInstaller
       run: |
-        pyinstaller spotify_downloader_clean.spec
+        pyinstaller pythonify.spec
     
     - name: Verify Build
       run: |
-        if [ -f "./dist/spotify_downloader_clean" ] || [ -f "./dist/spotify_downloader_clean.exe" ]; then
+        if [ -f "./dist/pythonify_clean" ] || [ -f "./dist/pythonify_clean.exe" ]; then
           echo "Build successful"
         else
           echo "Build failed"

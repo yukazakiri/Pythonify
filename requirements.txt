@@ -3,4 +3,4 @@ yt-dlp
 ytmusicapi
 rich
 python-dotenv
-
+requests
