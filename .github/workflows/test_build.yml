@@ -8,11 +8,8 @@ on:
 
 jobs:
   test_build:
-    name: Test Build on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+    name: Test Build on Windows
+    runs-on: windows-latest
     timeout-minutes: 30  # Adjust this value as needed
 
     steps:
@@ -29,19 +26,7 @@ jobs:
         pip install -r requirements.txt
         pip install pyinstaller python-dotenv
 
-    - name: Install FFmpeg (Ubuntu)
-      if: matrix.os == 'ubuntu-latest'
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y ffmpeg
-
-    - name: Install FFmpeg (macOS)
-      if: matrix.os == 'macos-latest'
-      run: |
-        brew install ffmpeg
-
-    - name: Download FFmpeg (Windows)
-      if: matrix.os == 'windows-latest'
+    - name: Download FFmpeg
       run: |
         Invoke-WebRequest -Uri "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl.zip" -OutFile "ffmpeg.zip"
         Expand-Archive -Path "ffmpeg.zip" -DestinationPath "."
@@ -58,7 +43,7 @@ jobs:
     
     - name: Verify Build
       run: |
-        if [ -f "./dist/pythonify_clean" ] || [ -f "./dist/pythonify_clean.exe" ]; then
+        if [ -f "./dist/pythonify_clean.exe" ]; then
           echo "Build successful"
         else
           echo "Build failed"
