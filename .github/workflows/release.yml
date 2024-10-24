@@ -46,7 +46,7 @@ jobs:
 
     - name: Build with PyInstaller
       run: |
-        pyinstaller pythonify_clean.spec
+        pyinstaller spotify_downloader_clean.spec
 
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
@@ -54,6 +54,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ./dist/pythonify_clean${{ matrix.os == 'windows-latest' && '.exe' || '' }}
-        asset_name: pythonify_${{ runner.os }}${{ matrix.os == 'windows-latest' && '.exe' || '' }}
+        asset_path: ./dist/spotify_downloader_clean${{ matrix.os == 'windows-latest' && '.exe' || '' }}
+        asset_name: spotify_downloader_${{ runner.os }}${{ matrix.os == 'windows-latest' && '.exe' || '' }}
         asset_content_type: application/octet-stream

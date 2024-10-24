@@ -13,6 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
+    timeout-minutes: 30  # Adjust this value as needed
 
     steps:
     - uses: actions/checkout@v2
@@ -48,11 +49,11 @@ jobs:
 
     - name: Test Build with PyInstaller
       run: |
-        pyinstaller pythonify_clean.spec
-
+        pyinstaller spotify_downloader_clean.spec
+    
     - name: Verify Build
       run: |
-        if [ -f "./dist/pythonify_clean" ] || [ -f "./dist/pythonify_clean.exe" ]; then
+        if [ -f "./dist/spotify_downloader_clean" ] || [ -f "./dist/spotify_downloader_clean.exe" ]; then
           echo "Build successful"
         else
           echo "Build failed"
