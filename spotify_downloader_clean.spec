@@ -1,6 +1,7 @@
 # -*- mode: python ; coding: utf-8 -*-
 
 import os
+import sys
 from PyInstaller.utils.hooks import collect_data_files
 
 block_cipher = None
@@ -8,12 +9,22 @@ block_cipher = None
 # Collect ytmusicapi data files
 ytmusicapi_datas = collect_data_files('ytmusicapi')
 
+# Add FFmpeg binary for Windows
+if sys.platform.startswith('win'):
+    ffmpeg_path = os.path.join(os.getcwd(), 'ffmpeg.exe')
+    if os.path.exists(ffmpeg_path):
+        binaries = [(ffmpeg_path, '.')]
+    else:
+        binaries = []
+else:
+    binaries = []
+
 a = Analysis(
     ['spotify_downloader_clean.py'],
     pathex=[],
-    binaries=[],
+    binaries=binaries,
     datas=ytmusicapi_datas,
-    hiddenimports=[],
+    hiddenimports=['pkg_resources.py2_warn'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],

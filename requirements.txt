@@ -1,0 +1,6 @@
+spotipy
+yt-dlp
+ytmusicapi
+rich
+python-dotenv
+

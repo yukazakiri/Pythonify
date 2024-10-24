@@ -19,8 +19,8 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 console = Console()
 
 # Spotify API credentials
-client_id = '471d9253fa4b4deb82ffaddc8c7d3510'
-client_secret = 'bb608567541a4adf857d0e87a2c1b5f1'
+client_id = '{Your Spotify Client ID}'
+client_secret = '{Your Spotify Client Secret}'
 
 # Initialize Spotify client
 try:

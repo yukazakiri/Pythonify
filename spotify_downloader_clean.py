@@ -3,14 +3,34 @@ from spotipy.oauth2 import SpotifyClientCredentials
 import yt_dlp
 from ytmusicapi import YTMusic
 import os
+import sys
+import subprocess
 
 # Spotify API credentials
-CLIENT_ID = '471d9253fa4b4deb82ffaddc8c7d3510'
-CLIENT_SECRET = 'bb608567541a4adf857d0e87a2c1b5f1'
+CLIENT_ID = '{Your Spotify Client ID}'
+CLIENT_SECRET = '{Your Spotify Client Secret}'
 
 # Initialize clients
 sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET))
 ytmusic = YTMusic()
+
+def get_ffmpeg_path():
+    if getattr(sys, 'frozen', False):
+        if sys.platform.startswith('win'):
+            return os.path.join(sys._MEIPASS, 'ffmpeg.exe')
+        else:
+            return 'ffmpeg'
+    else:
+        return 'ffmpeg'
+
+def check_ffmpeg():
+    ffmpeg_path = get_ffmpeg_path()
+    try:
+        subprocess.run([ffmpeg_path, '-version'], check=True, capture_output=True)
+        return True
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        print("FFmpeg is not installed or not accessible.")
+        return False
 
 def get_track_info(track_url):
     try:
@@ -62,16 +82,22 @@ def download_track(track_info):
             'outtmpl': f"{output_template}.%(ext)s",
             'quiet': True,
             'no_warnings': True,
+            'ffmpeg_location': get_ffmpeg_path(),
         }
 
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([video_url])
 
         return os.path.exists(f"{output_template}.mp3")
-    except:
+    except Exception as e:
+        print(f"Error downloading track: {str(e)}")
         return False
 
 def main():
+    if not check_ffmpeg():
+        print("Please install FFmpeg and make sure it's in your system PATH")
+        return
+
     url = input("Enter the Spotify track or playlist URL: ")
     
     if 'playlist' in url:
